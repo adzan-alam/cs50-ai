@@ -1,13 +1,14 @@
 import sys
 
-class Node():
+
+class Node:
     def __init__(self, state, parent, action):
         self.state = state
         self.parent = parent
         self.action = action
 
 
-class StackFrontier():
+class StackFrontier:
     def __init__(self):
         self.frontier = []
 
@@ -30,7 +31,6 @@ class StackFrontier():
 
 
 class QueueFrontier(StackFrontier):
-
     def remove(self):
         if self.empty():
             raise Exception("empty frontier")
@@ -39,8 +39,8 @@ class QueueFrontier(StackFrontier):
             self.frontier = self.frontier[1:]
             return node
 
-class Maze():
 
+class Maze:
     def __init__(self, filename):
 
         # Read file and set height and width of maze
@@ -80,7 +80,6 @@ class Maze():
 
         self.solution = None
 
-
     def print(self):
         solution = self.solution[1] if self.solution is not None else None
         print()
@@ -99,14 +98,13 @@ class Maze():
             print()
         print()
 
-
     def neighbors(self, state):
         row, col = state
         candidates = [
             ("up", (row - 1, col)),
             ("down", (row + 1, col)),
             ("left", (row, col - 1)),
-            ("right", (row, col + 1))
+            ("right", (row, col + 1)),
         ]
 
         result = []
@@ -114,7 +112,6 @@ class Maze():
             if 0 <= r < self.height and 0 <= c < self.width and not self.walls[r][c]:
                 result.append((action, (r, c)))
         return result
-
 
     def solve(self):
         """Finds a solution to maze, if one exists."""
@@ -132,7 +129,6 @@ class Maze():
 
         # Keep looping until solution found
         while True:
-
             # If nothing left in frontier, then no path
             if frontier.empty():
                 raise Exception("no solution")
@@ -163,24 +159,21 @@ class Maze():
                     child = Node(state=state, parent=node, action=action)
                     frontier.add(child)
 
-
     def output_image(self, filename, show_solution=True, show_explored=False):
         from PIL import Image, ImageDraw
+
         cell_size = 50
         cell_border = 2
 
         # Create a blank canvas
         img = Image.new(
-            "RGBA",
-            (self.width * cell_size, self.height * cell_size),
-            "black"
+            "RGBA", (self.width * cell_size, self.height * cell_size), "black"
         )
         draw = ImageDraw.Draw(img)
 
         solution = self.solution[1] if self.solution is not None else None
         for i, row in enumerate(self.walls):
             for j, col in enumerate(row):
-
                 # Walls
                 if col:
                     fill = (40, 40, 40)
@@ -207,9 +200,16 @@ class Maze():
 
                 # Draw cell
                 draw.rectangle(
-                    ([(j * cell_size + cell_border, i * cell_size + cell_border),
-                      ((j + 1) * cell_size - cell_border, (i + 1) * cell_size - cell_border)]),
-                    fill=fill
+                    (
+                        [
+                            (j * cell_size + cell_border, i * cell_size + cell_border),
+                            (
+                                (j + 1) * cell_size - cell_border,
+                                (i + 1) * cell_size - cell_border,
+                            ),
+                        ]
+                    ),
+                    fill=fill,
                 )
 
         img.save(filename)

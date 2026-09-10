@@ -1,3 +1,5 @@
+# this is my code that i wrote , my frontie was messed up took quite a long time if excuting through entre dataset
+
 import csv
 import sys
 
@@ -105,7 +107,7 @@ def shortest_path(source, target):
     while not frontier.empty():
         # remove the current node from frontier. add it to explored.
         current = frontier.remove()
-        explored.add(current.state)  # Store person_id string, e.g., "102"
+        explored.add(current)
         ## no_of_steps += 1
         ## print(no_of_steps)
 
@@ -120,19 +122,11 @@ def shortest_path(source, target):
             return path
 
         # if not target, get neightburs , if not in  explored add the to the frontier
-        """ 
         neighbours = neighbors_for_person(current.state)
         for n in neighbours:
             node = Node(n[1], current, n[0])
             if node not in explored:
                 frontier.add(node)
-        """
-        neighbours = neighbors_for_person(current.state)
-
-        for movie_id, person_id in neighbours:
-            if person_id not in explored and not frontier.contains_state(person_id):
-                child_node = Node(person_id, current, movie_id)
-                frontier.add(child_node)
         # get a new node from the frontier when loop resatrts
 
         # if we reach here, the no path is there
